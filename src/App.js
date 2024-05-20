@@ -1,23 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
-
+import React, { useContext } from 'react'
+import { BrowserRouter as Router,
+  Routes,Route } from 'react-router-dom';
+import { Context } from './context/context';
+import Home from './pages/home';
+import Admin from './pages/admin';
+import Login from './pages/login';
+import Student from './pages/student';
+import History from './pages/history';
+import Removed from './pages/removed';
 function App() {
+  const {user}=useContext(Context);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <Router>
+        <Routes>
+            <Route path="/" element={user?<><Home/></>:<Login />} />
+            <Route path="/Admin" element={user && user.Admin?<><Admin/></>:<Home/>} />
+            <Route path="/login" element={user?<Home/>:<Login />} />
+            <Route path="/student" element={user?<Student/>:<Login />}/>
+            <Route path="/leftstudents" element={user?<Removed/>:<Login />}/>
+            <Route path="/feeshistory" element={user && user.Admin?<History/>:<Home />}/>
+        </Routes>
+    </Router>
     </div>
   );
 }
